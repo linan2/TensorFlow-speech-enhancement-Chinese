@@ -1,5 +1,6 @@
 [English](https://github.com/linan2/TensorFlow-speech-enhancement.git) | 中文
 # 基于深度特征映射的语音增强方法
+本项目为可以利用DNN和CNN的方法来进行语音增强，其中DNN使用的三个隐层每个隐层512个节点，CNN使用的是R-CED的网络结构并且加入了一些resnet来防止过拟合。你也可以选择是否使用dropout或者l2等。
 
 ## 注意:
 
