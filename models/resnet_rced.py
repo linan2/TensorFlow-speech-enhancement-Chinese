@@ -33,16 +33,6 @@ class R_RCED(object):
         print(np.shape(outputs))
         return outputs
 
-#    def CNN_Layer(inputs, filters_num, splice_dim, filters_width, activation_fn, normalizer_fn, normalizer_params, weights_regularizer):
-#        tf.contrib.layers.conv2d(inputs, filters_num,
-#                        [splice_dim, filters_width],
-#                        activation_fn=activation_fn,
-#                        normalizer_fn=normalizer_fn,
-#                        normalizer_params=normalizer_params,
-#                        weights_initializer=xavier_initializer(),
-#                        weights_regularizer=weights_regularizer,
-#                        biases_initializer=tf.zeros_initializer())
-
     def infer(self, reuse):
         rced = self.rced
         activation_fn = tf.nn.relu
