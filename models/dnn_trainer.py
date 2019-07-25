@@ -14,9 +14,7 @@ import numpy as np
 
 sys.path.append(os.path.dirname(sys.path[0]))
 from models.dnn import *
-from models.cnn import *
-from models.rced import *
-from models.u_net import *
+from models.resnet_rced import *
 from utils.ops import *
 from keras.backend.tensorflow_backend import set_session
 config = tf.ConfigProto()
@@ -67,7 +65,6 @@ class Model(object):
 
 
 class DNNTrainer(Model):
-    """Generative Adversarial Network for Speech Enhancement"""
     def __init__(self, sess, args, devices,
                  inputs, labels, cross_validation=False, name='DNNTrainer'):
         super(DNNTrainer, self).__init__(name)
@@ -98,8 +95,6 @@ class DNNTrainer(Model):
         self.g_learning_rate = tf.Variable(args.g_learning_rate, trainable=False)
         if args.g_type == 'dnn':
             self.generator = DNN(self)
-        elif args.g_type == 'cnn':
-            self.generator = CNN(self)
         elif args.g_type == 'res_rced':
             self.generator = R_RCED(self)
         else:
@@ -150,10 +145,8 @@ class DNNTrainer(Model):
             self.g_losses = []
             self.g_mse_losses = []
             self.g_l2_losses = []
-        #g_mse_lossm = 0.5 * tf.losses.mean_squared_error(g_m, label_m) * 12
 
         g_mse_loss = tf.losses.mean_squared_error(g, labels) 
-        #g_mse_loss2 = 0.5 * tf.losses.mean_squared_error(g_p, label_p) * 15
         if not self.cross_validation and self.l2_scale > 0.0:
             reg_losses = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES, '.*g_model')
             g_l2_loss = tf.reduce_sum(reg_losses)
