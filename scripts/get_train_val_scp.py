@@ -16,7 +16,7 @@ import sys
 
 
 def main():
-    inputs_scp = os.path.join(FLAGS.data_dir, "inputs2.txt")
+    inputs_scp = os.path.join(FLAGS.data_dir, "all_wav.txt")
     tr_dir = os.path.join(FLAGS.data_dir, "tr")
     cv_dir = os.path.join(FLAGS.data_dir, "cv")
     tr_inputs_scp = os.path.join(tr_dir, "inputs.txt")

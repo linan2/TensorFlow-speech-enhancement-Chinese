@@ -19,8 +19,8 @@ save_dir=exp/dnn
 # Data prepare
 if [ $stage -le 0 ]; then
   echo "Prepare tr and cv data"
-#  python scripts/get_train_val_scp.py --data_dir=$train_dir --val_size 500 
-#  date
+  python scripts/get_train_val_scp.py --data_dir=$train_dir --val_size 500 
+  date
   # Make TFRecords file
   echo "Begin making TFRecords files ..."
   if [ ! -d $logdir ]; then
