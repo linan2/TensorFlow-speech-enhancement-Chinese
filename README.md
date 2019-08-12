@@ -11,7 +11,7 @@
 如果你的任务是做特征增强（不需要还原到语音），你可以把log spectragram特征替换成其他特征（比如MFCC）。
 
 ## 使用:
-第一步. 运行 ex_trac.sh 来提取 log spectragram 特征.
+第一步. 运行 ex_trac.sh 数据准备并将数据分成训练集和交叉验证集，然后提取 log spectragram 特征.
 
 第二步. 运行 train.sh 来训练和测试模型.
 
