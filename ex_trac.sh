@@ -8,6 +8,7 @@ for dataset in data/all_wav data/test_wav;do
 	awk -F '/' '{print $NF}' $dataset | awk -F '.' '{print $1}' > data/wav_name
 	past -d ' ' data/wav_name $dataset > data/`echo $dataset | awk -F '/' '{print $2}'`.txt
 	rm data/wav_name
+done
 python scripts/get_train_val_scp.py --data_dir=$data --val_size $val_size
 echo "Finish data prepare!"
 date
