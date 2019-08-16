@@ -19,3 +19,4 @@ cat _pesq_results.txt|tail -n 373 |head -n 372|awk '{sum+=$2} END {print "real_p
 wait
 fi
 cat avr_pesq
+rm avr_pesq
