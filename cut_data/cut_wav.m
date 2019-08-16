@@ -8,7 +8,7 @@ wavlist2 = path2;
 wavlist2 = [wavlist2];
 
 
-for i=1:7861
+for i=1:length(wavlist2)
      wav_cln = audioread(wavlist1{i});
      wav_rev = audioread(wavlist2{i});
      disp(wavlist1{i});
