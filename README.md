@@ -3,6 +3,7 @@
 本项目为可以利用DNN和CNN的方法来进行语音增强，其中DNN使用的三个隐层每个隐层512个节点，CNN使用的是R-CED的网络结构并且加入了一些resnet来防止过拟合。你也可以选择是否使用dropout或者l2等。
 
 ## 注意:
+requirement：TensorFlow1.5 Python2.7
 
 [制造数据](https://github.com/linan2/add_reverb2.git) 在运行此代码之前你应该先准备好干净和相应的含噪或者含混响的语音。
 
