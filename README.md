@@ -5,7 +5,7 @@
 ## 注意:
 requirement：TensorFlow1.5 Python2.7
 
-[制造数据](https://github.com/linan2/add_reverb2.git) 在运行此代码之前你应该先准备好干净和相应的含噪或者含混响的语音; 或者运行utils/add_additive_noise.py 添加相应信噪比的加性噪声，这里使用的事NOISEX-92噪声库。
+[制造数据](https://github.com/linan2/add_reverb2.git) 在运行此代码之前你应该先准备好干净和相应的含噪或者含混响的语音; 或者运行utils/add_additive_noise.py 添加相应信噪比的加性噪声，这里使用的事NOISEX-92噪声库在目录mini_data/Noise底下，带2的是8k采样率其他是相应的16k采样率噪音。
 
 如果你的任务是去混响，在运行此代码之前你需要将含混响的语音剪切的和干净的语音一样长,cut_wav里面的脚本可能对你有用。
 
