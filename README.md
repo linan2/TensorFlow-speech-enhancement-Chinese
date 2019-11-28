@@ -19,7 +19,7 @@ requirement：TensorFlow1.5 Python2.7
 第三步. 运行 ca_pesq.sh 使用PESQ来评价你的结果。
 
 ## 补充:
-代码还不完善，持续更新ing…
+代码还不完善，持续更新ing…大家如果发现有什么bug可以在代码上直接更改，然后更新。
 
 本人在 REVERB challenge 数据集上测试了此代码的效果，PESQ能提高大约0.6—0.8。
 
