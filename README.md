@@ -5,7 +5,7 @@
 ## 注意:
 requirement：TensorFlow1.5 Python2.7
 
-[制造数据](https://github.com/linan2/add_reverb2.git) 在运行此代码之前你应该先准备好干净和相应的含噪或者含混响的语音，或者运行prepare_data_list.py 添加相应信噪比的加性噪声，这里使用的事NOISEX-92噪声库。
+[制造数据](https://github.com/linan2/add_reverb2.git) 在运行此代码之前你应该先准备好干净和相应的含噪或者含混响的语音; 或者运行utils/add_additive_noise.py 添加相应信噪比的加性噪声，这里使用的事NOISEX-92噪声库。
 
 如果你的任务是去混响，在运行此代码之前你需要将含混响的语音剪切的和干净的语音一样长,cut_wav里面的脚本可能对你有用。
 
@@ -19,7 +19,7 @@ requirement：TensorFlow1.5 Python2.7
 第三步. 运行 ca_pesq.sh 使用PESQ来评价你的结果。
 
 ## 补充:
-代码还不完善，持续更新ing…
+代码还不完善，持续更新ing…大家如果发现有什么bug可以在代码上直接更改，然后更新。科研任务重，更新慢大家见谅。
 
 本人在 REVERB challenge 数据集上测试了此代码的效果，PESQ能提高大约0.6—0.8。
 
