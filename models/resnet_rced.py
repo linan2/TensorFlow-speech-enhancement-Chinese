@@ -100,7 +100,7 @@ class R_RCED(object):
             inputs_1 = tf.contrib.layers.conv2d(inputs_0, filters_num[1],[splice_dim, filters_width[1]],activation_fn=activation_fn,
                             normalizer_fn=normalizer_fn, normalizer_params=normalizer_params,weights_initializer=xavier_initializer(),
                             weights_regularizer=weights_regularizer,biases_initializer=tf.zeros_initializer())
-#            inputs_1 = inputs_1 + inputs_0
+#            #inputs_1 = inputs_1 + inputs_0
             #inputs_1=tf.layers.max_pooling2d(inputs=inputs_1, pool_size=[2, 2], strides=2,padding = 'valid')
             inputs_2 = tf.contrib.layers.conv2d(inputs_1, filters_num[2],[splice_dim, filters_width[2]],activation_fn=activation_fn,
                             normalizer_fn=normalizer_fn, normalizer_params=normalizer_params,weights_initializer=xavier_initializer(),
@@ -109,7 +109,7 @@ class R_RCED(object):
             inputs_3 = tf.contrib.layers.conv2d(inputs_2, filters_num[3],[splice_dim, filters_width[3]],activation_fn=activation_fn,
                             normalizer_fn=normalizer_fn, normalizer_params=normalizer_params,weights_initializer=xavier_initializer(),
                             weights_regularizer=weights_regularizer,biases_initializer=tf.zeros_initializer())
-#            inputs_3 = inputs_3 + inputs_2
+#            #inputs_3 = inputs_3 + inputs_2
             #inputs_3=tf.layers.max_pooling2d(inputs=inputs_3, pool_size=[2, 2], strides=2,padding = 'valid')
             inputs_4 = tf.contrib.layers.conv2d(inputs_3, filters_num[4],[splice_dim, filters_width[4]],activation_fn=activation_fn,
                             normalizer_fn=normalizer_fn, normalizer_params=normalizer_params,weights_initializer=xavier_initializer(),
@@ -121,19 +121,19 @@ class R_RCED(object):
             inputs_6 = tf.contrib.layers.conv2d(inputs_4, filters_num[6],[splice_dim, filters_width[6]],activation_fn=activation_fn,
                             normalizer_fn=normalizer_fn, normalizer_params=normalizer_params,weights_initializer=xavier_initializer(),
                             weights_regularizer=weights_regularizer,biases_initializer=tf.zeros_initializer())
-#            inputs_5 = inputs_5 + inputs_4  
+#            #inputs_5 = inputs_5 + inputs_4  
             #inputs_5=tf.layers.max_pooling2d(inputs=inputs_5, pool_size=[2, 2], strides=2)
             #inputs_5=tf.layers.conv2d_transpose(inputs_5,filters = filters_num[6],kernel_size= (2,2),strides= (2,2),padding= 'valid',activation= tf.nn.relu)
             inputs_7 = tf.contrib.layers.conv2d(inputs_5, filters_num[7],[splice_dim, filters_width[7]],activation_fn=activation_fn,
                             normalizer_fn=normalizer_fn, normalizer_params=normalizer_params,weights_initializer=xavier_initializer(),
                             weights_regularizer=weights_regularizer,biases_initializer=tf.zeros_initializer())
 
-            inputs_7 = inputs_7 + inputs_3
+            #inputs_7 = inputs_7 + inputs_3
             inputs_8 = tf.contrib.layers.conv2d(inputs_6, filters_num[8],[splice_dim, filters_width[8]],activation_fn=activation_fn,
                             normalizer_fn=normalizer_fn, normalizer_params=normalizer_params,weights_initializer=xavier_initializer(),
                             weights_regularizer=weights_regularizer,biases_initializer=tf.zeros_initializer())
             
-            inputs_8 = inputs_8 + inputs_6 
+            #inputs_8 = inputs_8 + inputs_6 
             #inputs_7=tf.layers.conv2d_transpose(inputs_7,filters = filters_num[6],kernel_size= (2,2),strides= (2,2),padding= 'valid',activation= tf.nn.relu)
             #inputs_7=tf.layers.max_pooling2d(inputs=inputs_7, pool_size=[2, 2], strides=2)
             inputs_8 = tf.contrib.layers.conv2d(inputs_7, filters_num[8],[splice_dim, filters_width[8]],activation_fn=activation_fn,
