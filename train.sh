@@ -64,8 +64,8 @@ if [ $stage -le 2 ]; then
       --output_dim=257 \
       --left_context=5 \
       --right_context=5 \
-      --min_epoches=10 \
-      --max_epoches=12 \
+      --min_epoches=30 \
+      --max_epoches=35 \
       --decay_factor=0.8 \
       --start_halving_impr=0.01 \
       --end_halving_impr=0.001 \
