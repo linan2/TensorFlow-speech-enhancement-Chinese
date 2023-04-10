@@ -194,7 +194,7 @@ def get_amplitude_scaling_factor(s, n, snr, method='rms'):
       float, scaler. 
     """
     original_sn_rms_ratio = rms(s) / rms(n)
-    target_sn_rms_ratio =  10. ** (float(snr) / 10.)    # snr = 20 * lg(rms(s) / rms(n))
+    target_sn_rms_ratio =  10. ** (float(snr) / 10.)    # snr = 10 * lg(rms(s) / rms(n))
     signal_scaling_factor = np.sqrt(original_sn_rms_ratio/target_sn_rms_ratio)
     return signal_scaling_factor
 
@@ -250,149 +250,9 @@ def calc_sp(audio, mode):
     return x
     
 ###
-def pack_features(args):
-    """Load all features, apply log and conver to 3D tensor, write out to .h5 file. 
-    
-    Args:
-      workspace: str, path of workspace. 
-      data_type: str, 'train' | 'test'. 
-      snr: float, signal to noise ratio to be mixed. 
-      n_concat: int, number of frames to be concatenated. 
-      n_hop: int, hop frames. 
-    """
-    workspace = args.workspace
-    data_type = args.data_type
-    snr = args.snr
-    n_concat = args.n_concat
-    n_hop = args.n_hop
-    
-    x_all = []  # (n_segs, n_concat, n_freq)
-    y_all = []  # (n_segs, n_freq)
-    
-    cnt = 0
-    t1 = time.time()
-    
-    # Load all features. 
-    feat_dir = os.path.join(workspace, "features", "spectrogram", data_type, "%ddb" % int(snr))
-    names = os.listdir(feat_dir)
-    for na in names:
-        # Load feature. 
-        feat_path = os.path.join(feat_dir, na)
-        data = cPickle.load(open(feat_path, 'rb'))
-        [mixed_complx_x, speech_x, noise_x, alpha, na] = data
-        mixed_x = np.abs(mixed_complx_x)
-
-        # Pad start and finish of the spectrogram with boarder values. 
-        n_pad = (n_concat - 1) / 2
-        mixed_x = pad_with_border(mixed_x, n_pad)
-        speech_x = pad_with_border(speech_x, n_pad)
-    
-        # Cut input spectrogram to 3D segments with n_concat. 
-        mixed_x_3d = mat_2d_to_3d(mixed_x, agg_num=n_concat, hop=n_hop)
-        x_all.append(mixed_x_3d)
-        
-        # Cut target spectrogram and take the center frame of each 3D segment. 
-        speech_x_3d = mat_2d_to_3d(speech_x, agg_num=n_concat, hop=n_hop)
-        y = speech_x_3d[:, (n_concat - 1) / 2, :]
-        y_all.append(y)
-    
-        # Print. 
-        if cnt % 100 == 0:
-            print(cnt)
-            
-        # if cnt == 3: break
-        cnt += 1
-        
-    x_all = np.concatenate(x_all, axis=0)   # (n_segs, n_concat, n_freq)
-    y_all = np.concatenate(y_all, axis=0)   # (n_segs, n_freq)
-    
-    x_all = log_sp(x_all).astype(np.float32)
-    y_all = log_sp(y_all).astype(np.float32)
-    
-    # Write out data to .h5 file. 
-    out_path = os.path.join(workspace, "packed_features", "spectrogram", data_type, "%ddb" % int(snr), "data.h5")
-    create_folder(os.path.dirname(out_path))
-    with h5py.File(out_path, 'w') as hf:
-        hf.create_dataset('x', data=x_all)
-        hf.create_dataset('y', data=y_all)
-    
-    print("Write out to %s" % out_path)
-    print("Pack features finished! %s s" % (time.time() - t1,))
     
 def log_sp(x):
     return np.log(x + 1e-08)
-    
-def mat_2d_to_3d(x, agg_num, hop):
-    """Segment 2D array to 3D segments. 
-    """
-    # Pad to at least one block. 
-    len_x, n_in = x.shape
-    if (len_x < agg_num):
-        x = np.concatenate((x, np.zeros((agg_num - len_x, n_in))))
-        
-    # Segment 2d to 3d. 
-    len_x = len(x)
-    i1 = 0
-    x3d = []
-    while (i1 + agg_num <= len_x):
-        x3d.append(x[i1 : i1 + agg_num])
-        i1 += hop
-    return np.array(x3d)
-
-def pad_with_border(x, n_pad):
-    """Pad the begin and finish of spectrogram with border frame value. 
-    """
-    x_pad_list = [x[0:1]] * n_pad + [x] + [x[-1:]] * n_pad
-    return np.concatenate(x_pad_list, axis=0)
-
-###
-def compute_scaler(args):
-    """Compute and write out scaler of data. 
-    """
-    workspace = args.workspace
-    data_type = args.data_type
-    snr = args.snr
-    
-    # Load data. 
-    t1 = time.time()
-    hdf5_path = os.path.join(workspace, "packed_features", "spectrogram", data_type, "%ddb" % int(snr), "data.h5")
-    with h5py.File(hdf5_path, 'r') as hf:
-        x = hf.get('x')     
-        x = np.array(x)     # (n_segs, n_concat, n_freq)
-    
-    # Compute scaler. 
-    (n_segs, n_concat, n_freq) = x.shape
-    x2d = x.reshape((n_segs * n_concat, n_freq))
-    scaler = preprocessing.StandardScaler(with_mean=True, with_std=True).fit(x2d)
-    print(scaler.mean_)
-    print(scaler.scale_)
-    
-    # Write out scaler. 
-    out_path = os.path.join(workspace, "packed_features", "spectrogram", data_type, "%ddb" % int(snr), "scaler.p")
-    create_folder(os.path.dirname(out_path))
-    pickle.dump(scaler, open(out_path, 'wb'))
-    
-    print("Save scaler to %s" % out_path)
-    print("Compute scaler finished! %s s" % (time.time() - t1,))
-    
-def scale_on_2d(x2d, scaler):
-    """Scale 2D array data. 
-    """
-    return scaler.transform(x2d)
-    
-def scale_on_3d(x3d, scaler):
-    """Scale 3D array data. 
-    """
-    (n_segs, n_concat, n_freq) = x3d.shape
-    x2d = x3d.reshape((n_segs * n_concat, n_freq))
-    x2d = scaler.transform(x2d)
-    x3d = x2d.reshape((n_segs, n_concat, n_freq))
-    return x3d
-    
-def inverse_scale_on_2d(x2d, scaler):
-    """Inverse scale 2D array data. 
-    """
-    return x2d * scaler.scale_[None, :] + scaler.mean_[None, :]
     
 ###
 def load_hdf5(hdf5_path):
